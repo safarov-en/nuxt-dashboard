@@ -8,20 +8,14 @@
             <div class="w-[120px] h-[36px] bg-neutral-200"></div>
         </header>
         <main class="grid gap-4">
-            <Tabs default-value="account" class="w-[400px]">
+            <Tabs default-value="Today" class="w-[400px]">
                 <TabsList>
-                    <TabsTrigger value="account">
-                        Account
-                    </TabsTrigger>
-                    <TabsTrigger value="password">
-                        Password
+                    <TabsTrigger v-for="item, index in list" :key='index' :value="item.title">
+                        {{item.title}}
                     </TabsTrigger>
                 </TabsList>
-                <TabsContent value="account">
-                    Make changes to your account here.
-                </TabsContent>
-                <TabsContent value="password">
-                    Change your password here.
+                <TabsContent v-for="item, index in list" :key="index" :value="item.title">
+                    <component :is='item.component' />
                 </TabsContent>
             </Tabs>
             <!-- <div class="flex items-center gap-4">
@@ -40,4 +34,23 @@
 </template>
 <script setup>
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+// import { resolveComponent } from 'vue'
+const list = [
+    {
+        title: 'Today',
+        component: resolveComponent("TabsToday")
+    },
+    {
+        title: 'Week',
+        component: resolveComponent("TabsToday")
+    },
+    {
+        title: 'Month',
+        component: resolveComponent("TabsToday")
+    },
+    {
+        title: 'Year',
+        component: resolveComponent("TabsToday")
+    }
+]
 </script>
