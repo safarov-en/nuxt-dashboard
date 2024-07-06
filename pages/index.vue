@@ -7,16 +7,15 @@
             </div>
             <div class="w-[120px] h-[36px] bg-neutral-200"></div>
         </header>
-        <main class="grid gap-4">
-            <Tabs default-value="Today">
+        <main class="grid w-full gap-4">
+            <Tabs default-value="Today" class="w-full" @click="setCategory">
                 <TabsList class="max-w-[400px]">
                     <TabsTrigger v-for="item, index in list" :key='index' :value="item.title">
                         {{item.title}}
                     </TabsTrigger>
                 </TabsList>
-                <TabsContent v-for="item, index in list" :key="index" :value="item.title">
-                    <!-- <component :is='item.component' /> -->
-                     <highchart :options="options" />
+                <TabsContent class="w-[100%]" v-for="item, index in list" :key="index" :value="item.title">
+                    <Chart v-if="data.length > 0" :currentCategory="currentCategory" :data="data" />
                 </TabsContent>
             </Tabs>
         </main>
@@ -31,83 +30,47 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 const list = [
     {
-        title: 'Today',
-        component: resolveComponent("TabsToday")
+        title: 'Today'
     },
     {
-        title: 'Week',
-        component: resolveComponent("TabsToday")
+        title: 'Week'
     },
     {
-        title: 'Month',
-        component: resolveComponent("TabsToday")
+        title: 'Month'
     },
     {
-        title: 'Year',
-        component: resolveComponent("TabsToday")
+        title: 'Year'
     }
 ]
-let data = ref([
-            16.0, 18.2, 23.1, 27.9, 32.2, 36.4, 39.8, 38.4, 35.5, 29.2,
-            22.0, 17.8
-        ])
-let categories = ref({
-    'today': [],
-    'week': [],
-    'month': [],
-    'year': []
+let data = ref([])
+let currentCategory = ref('today')
+const setCategory = (e) => {
+    let v = e.target.innerText.toLowerCase()
+    currentCategory.value = v
+    switch(v) {
+        case 'today':
+            generateRandomValue(24)
+            break
+        case 'week':
+            generateRandomValue(7)
+            break
+        case 'month':
+            generateRandomValue(31)
+            break
+        case 'year':
+            generateRandomValue(12)
+            break
+    }
+}
+function generateRandomValue(number = 7) {
+    let values = []
+    for(let i = 0; i < number; i++) {
+        values.push(Math.floor(Math.random() * 100))
+    }
+    data.value = values
+    return values
+}
+onMounted(() => {
+    generateRandomValue(24)
 })
-let currentCategory = ref([
-            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-            'Oct', 'Nov', 'Dec'
-        ])
-const options = computed(() => ({
-    chart: {
-        type: 'line',
-        animation: {
-            enabled: false
-        }
-    },
-    legend: {
-        enabled: false
-    },
-    title: {
-        text: ''
-    },
-    xAxis: {
-        gridLineColor: 'transparent',
-        categories: currentCategory
-    },
-    yAxis: {
-        gridLineColor: 'transparent',
-        title: {
-            text: ''
-        }
-    },
-    plotOptions: {
-        line: {
-            marker: {
-                enabled: false
-            },
-            dataLabels: {
-                enabled: false
-            },
-            enableMouseTracking: true
-        }
-    },
-    series: [{
-        name: 'line',
-        lineWidth: '4px',
-        color: {
-            linearGradient: {},
-            stops: [
-                [0, 'rgba(252, 176, 69, 1)'],
-                [0.33, 'rgba(253, 29, 29, 1)'],
-                [0.66, 'rgba(131, 58, 180, 1)'],
-                [1, 'rgba(29, 217, 83, 1)']
-            ]
-        },
-        data: data.value
-    }]
-}))
 </script>
