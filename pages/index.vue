@@ -5,7 +5,7 @@
                 <p>Hi, welcome back!</p>
                 <h1>Dashboard</h1>
             </div>
-            <div class="w-[120px] h-[36px] bg-neutral-200"></div>
+            <ProductNew />
         </header>
         <main class="grid w-full gap-4">
             <Tabs default-value="Today" class="w-full" @click="setCategory">
