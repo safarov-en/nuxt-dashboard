@@ -28,17 +28,17 @@ const items = ref([
     },
     {
         title: 'Account',
-        path: '/account',
+        path: '/',
         icon: 'mdi-light:account'
     },
     {
         title: 'Contacts',
-        path: '/contacts',
+        path: '/',
         icon: 'material-symbols:contacts-outline'
     },
     {
         title: 'Settings',
-        path: '/settings',
+        path: '/',
         icon: 'material-symbols:settings-outline'
     }
 ])
